@@ -1,184 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Selider by skatersercan</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <title>Selider by skatersercan</title>
   </head>
+
   <body>
-  <style>
-    /* Selightbox v1.1
-   http://wwww.sercaneraslan.com */
-.selider {
-    overflow: hidden;
-    position: relative;
-    margin: 10px;
-}
-.selider ul {
-    position: absolute;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.selider li { 
-    float: left;
-    position: relative;
-}
-.selider li p {
-    background: #000;
-    background: rgba(0, 0, 0, 0.5) !important;
-    padding: 5px 10px;
-    cursor: pointer;
-    position: absolute;
-    left: 10px;
-    bottom: 5px;
-    color: #FFF;
-    font-family: Helvetica;
-}
-#sPaging ul {
-    height: 18px;
-    margin: 5px auto;
-}
-#sPaging li {
-    display: block;
-    height: 18px;
-    width: 18px;
-    float: left;
-    margin-right: 5px;
-    background: url('https://raw.github.com/skatersercan/Selider/master/images/pagination.png') no-repeat;
-}
-#sPaging .on {
-    background: url('https://raw.github.com/skatersercan/Selider/master/images/pagination.png') no-repeat 0 -27px;
-}
-.selider, .selider p {
-    -moz-border-radius: 5px; 
-    -webkit-border-radius: 5px; 
-    border-radius: 5px;
-}
-  </style>
-  <script>
-    // Slider v1.1
-// http://wwww.sercaneraslan.com
-$(function(){
-    $.fn.selider = function(options){
-        var i = 0,
-            timing,
-            el = $(this),
-            imageCount = el.children().children().length,
+    <header>
+      <div class="inner">
+        <h1>Selider</h1>
+        <h2>Küçük bir slider kütüphanesi...</h2>
+        <a href="https://github.com/skatersercan/Selider" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-            settings = $.extend({
-                'height' : 400,
-                'width'  : 400,
-                'speed'  : 4000,
-                'paging' : true
-            }, options),
-
-            slide = function(){
-                (i == imageCount) ? i = 0 : i = i;
-
-                $("#sPaging li").eq(i).addClass("on").siblings().removeClass("on");
-
-                el.children().animate({left: -i * settings.width}, 300);
-
-                timing = setTimeout(slide,settings.speed);
-
-                i++;
-            },
-            paging = function(){
-                if (settings.paging){
-                    el.after('<div id="sPaging"><ul></ul></div>');
-
-                    for (i; i < imageCount; i++){
-                        $("#sPaging ul").append('<li></li>');
-                    };
-
-                    $("#sPaging").css('width', settings.width)
-                                 .children().css('width', imageCount * 23);
-
-                    $("#sPaging li").click(function(){
-                        clearTimeout(timing);
-                        i = $(this).index();
-                        slide();
-                    });
-                };
-            };
-
-        el.css({'height': settings.height, 'width': settings.width})
-          .children().css('width', settings.width * imageCount);
-
-        paging();
-        slide();
-    };
-})
-  </script>
-  
-  <script>
-        $(function(){
-            $("#mySlider").selider({'height' : 350, 'width' : 670});
-        });
-  </script>
-  
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/skatersercan/Selider">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/skatersercan/Selider/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/skatersercan/Selider/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
-    <div class="wrapper">
-
-      <section>
-        <div id="title">
-          <h1>Selider</h1>
-          <p>Küçük bir slider kütüphanesi...</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/skatersercan">skatersercan</a></span>
-         
-        </div>
-
-        <h3>Selider Nedir?</h3>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>Selider Nedir?</h3>
 
 <p>Hızlı çalışan ve kullanması pratik olan bir Slider'dır. Tarayıcıların hepsinde çalışır. Büyük kütüphaneleri kullanma derdinize son verir. </p>
-
-
-<div id="mySlider" class="selider">
-    <ul>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider1.png" alt="Ice Age"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 2</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider2.png" alt="Ice Age 2"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 3</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider3.png" alt="Ice Age 3"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 4</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider4.png" alt="Ice Age 4"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 5</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider5.png" alt="Ice Age 5"/>
-        </li>
-    </ul>
-</div>
 
 <h3>Nasıl Kullanılır?</h3>
 
@@ -240,10 +92,25 @@ $(function(){
 <h3>Aynı sayfada birden fazla slider kullanabilir miyim?</h3>
 
 <p>Evet, her slider'a farklı id verip kullanabilirsiniz.</p>
-      </section>
+        </section>
 
+        <aside id="sidebar">
+          <a href="https://github.com/skatersercan/Selider/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/skatersercan/Selider/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/skatersercan/Selider"></a> is maintained by <a href="https://github.com/skatersercan">skatersercan</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+
+  
   </body>
 </html>
