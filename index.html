@@ -79,6 +79,7 @@ $(function(){
         var i = 0,
             timing,
             el = $(this),
+            win = $(window),
             imageCount = el.children().children().length,
 
             settings = $.extend({
@@ -88,12 +89,14 @@ $(function(){
                 'paging' : true
             }, options),
 
+            settingsWidth = settings.width,
+
             slide = function(){
                 (i == imageCount) ? i = 0 : i = i;
 
                 $("#sPaging li").eq(i).addClass("on").siblings().removeClass("on");
 
-                el.children().animate({left: -i * settings.width}, 300);
+                el.children().animate({left: -i * settingsWidth}, 300);
 
                 timing = setTimeout(slide,settings.speed);
 
@@ -107,8 +110,7 @@ $(function(){
                         $("#sPaging ul").append('<li></li>');
                     };
 
-                    $("#sPaging").css('width', settings.width)
-                                 .children().css('width', imageCount * 23);
+                    $("#sPaging ul").css('width', imageCount * 23);
 
                     $("#sPaging li").click(function(){
                         clearTimeout(timing);
@@ -116,13 +118,32 @@ $(function(){
                         slide();
                     });
                 };
+            },
+            responsive = function(){
+                var width = win.width();
+
+
+                if (settingsWidth+20 != width){
+                    settingsWidth = width-20;
+                };
+
+                if (settings.width+20 < width){
+                    settingsWidth = settings.width-20;
+                };
+
+                el.css('height', $(".selider img").height())
+                  .children().css('width', settings.width * imageCount);
+
+                $(".selider img , #sPaging").add(el).css('width', settingsWidth);
+                    
+                return settingsWidth;
             };
 
-        el.css({'height': settings.height, 'width': settings.width})
-          .children().css('width', settings.width * imageCount);
-
         paging();
+        responsive();
         slide();
+
+        win.bind("resize", responsive);
     };
 })
   </script>
