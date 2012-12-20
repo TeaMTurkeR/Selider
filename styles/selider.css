@@ -39,6 +39,7 @@
     background: url('../images/pagination.png') no-repeat;
 }
 #sPaging .on {
+    cursor: pointer;
     background: url('../images/pagination.png') no-repeat 0 -27px;
 }
 .selider, .selider p {
