@@ -1,7 +1,7 @@
 ### Selider Nedir?
 Hızlı çalışan ve kullanması pratik olan bir Slider'dır. Tarayıcıların hepsinde çalışır. Büyük kütüphaneleri kullanma derdinize son verir. 
 
-Nasıl göründüğüne <a href="http://skatersercan.github.com/Selider/">buradan</a> bakarabilirsiniz.
+Nasıl göründüğüne <a href="http://sercaneraslan.github.io/Selider/">buradan</a> bakarabilirsiniz.
 
 ### Nasıl Kullanılır?
 İlk yapılması gereken dosyaları sayfamıza çağırmak.
