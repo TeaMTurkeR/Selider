@@ -4,7 +4,6 @@
 * sercaneraslan.com
 *
 */
-
 $(function() {
     $.fn.selider = function( options ) {
 
