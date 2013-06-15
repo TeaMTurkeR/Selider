@@ -55,7 +55,7 @@ $("#mySlider").selider({
 });
 ```
 
-Thumbmnail'ın genişliğini verelim.
+Thumbnail'ın genişliğini verelim.
 
 ```
 #sThumbnail {
@@ -100,7 +100,7 @@ ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını ekleyelim
 
 
 ### Paging
-Varsayılan olarak "false" değerini alır. Eğer Slider'ınızda sayfalama kullanmak isterseniz "paging" özelliğini "true" olarak değiştirmeniz yeterlidir.
+Varsayılan olarak "false" değerini alır. Eğer Slider'ınızda sayfalama kullanmak isterseniz "paging" özelliğini "true" olarak değiştirmeniz yeterlidir.  Not: "thumbnail" özelliği "true" ise "paging" özelliği çalışmaz çünkü ikiside benzer işleri yapıyor.
 
 ```
 $("#mySlider").selider({
