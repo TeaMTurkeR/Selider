@@ -12,12 +12,13 @@ Nasıl göründüğüne <a href="http://sercaneraslan.github.io/Selider/">burada
 <script type="text/javascript" src="scripts/selider.js"></script>
 ```
 
-Sonra "selider" class'ı olan bir div ekliyoruz. id'sini istediğiniz isimle verebilirsiniz. Daha sonra ul li içerisine img etiketlerini ekliyoruz ve görsellerin kaynağını yazıyoruz.
+Sonra "selider" class'ı olan bir div ekliyoruz. id'sini istediğiniz isimle verebilirsiniz. Daha sonra ul li içerisine img etiketlerini ekliyoruz ve görsellerin kaynağını yazıyoruz. Eğer li etiketlerinin içine p etiketi koyarsanız bu etiket içinde ki metin/link slide ile birlikte gözükecektir.
 
 ```
 <div id="mySlider" class="selider">
     <ul>
         <li>
+            <p>Ice Age - Dawn Of The Dinosaurs</p>
             <img src="images/sliderImages/slider1.png" alt="Ice Age 1"/>
         </li>
         <li>
@@ -54,6 +55,13 @@ $("#mySlider").selider({
 });
 ```
 
+Thumbmnail'ın genişliğini verelim.
+
+```
+#sThumbnail {
+    width: 648px;
+}
+```
 ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını eklemeniz gerekir.
 
 ```
