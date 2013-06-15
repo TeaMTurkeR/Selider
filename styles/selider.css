@@ -1,9 +1,13 @@
-/* Selightbox v1.1
-   http://wwww.sercaneraslan.com */
+/*
+*
+* Selider version 2.0
+* sercaneraslan.com
+*
+*/
 .selider {
     overflow: hidden;
     position: relative;
-    margin: 10px;
+    border-radius: 5px;
 }
 .selider ul {
     position: absolute;
@@ -15,20 +19,65 @@
     float: left;
     position: relative;
 }
-.selider li p {
-    background: #000;
-    background: rgba(0, 0, 0, 0.5) !important;
-    padding: 5px 10px;
+
+/*
+*
+* Genaral Styles
+*
+*/
+#sPaging li,
+#sPaging .on,
+#sPrev,
+#sNext,
+#sThumbPrev,
+#sThumbNext {
+    background: url('../images/seliderIcons.png') no-repeat;
+}
+
+#sPrev,
+#sNext,
+#sPaging li,
+#sThumbnail li,
+#sThumbPrev,
+#sThumbNext,
+.selider p {
     cursor: pointer;
+}
+
+/*
+*
+* Prev and Next Icon Styles
+*
+*/
+#sPrev,
+#sNext {
+    height: 40px;
+    width: 37px;
     position: absolute;
+    top: 50%;
+    margin-top: -20px; /* height / 2 */
+    z-index: 2;
+}
+#sPrev {
     left: 10px;
-    bottom: 5px;
-    color: #FFF;
-    font-family: Helvetica;
+}
+#sNext {
+    right: 10px;
+    background-position: -40px 0;
+}
+
+/*
+*
+* Paging Styles
+*
+*/
+#sPaging {
+    margin: 10px 0;
 }
 #sPaging ul {
     height: 18px;
-    margin: 5px auto;
+    margin: 0 auto;
+    padding: 0;
 }
 #sPaging li {
     display: block;
@@ -36,14 +85,85 @@
     width: 18px;
     float: left;
     margin-right: 5px;
-    background: url('../images/pagination.png') no-repeat;
+    background-position: -80px 0;
 }
 #sPaging .on {
-    cursor: pointer;
-    background: url('../images/pagination.png') no-repeat 0 -27px;
+    background-position: -80px -22px;
 }
-.selider, .selider p {
-    -moz-border-radius: 5px; 
-    -webkit-border-radius: 5px; 
+
+/*
+*
+* Thumbnail Styles
+*
+*/
+#sThumbnail {
+    background: #E1E1E1;
+    padding: 7px 0 10px 20px;
+    margin-top: 15px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    height: 58px;
+}
+#sThumbContainer {
+    position: relative;
+    margin-left: 11px;
+}
+#sThumbnail ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+}
+#sThumbnail li {
+    display: block;
+    height: 50px;
+    width: 100px;
+    float: left;
+    margin: 0 0 10px 11px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    padding: 5px;
+}
+#sThumbnail li:first-child {
+    margin-left: 0;
+}
+#sThumbPrev,
+#sThumbNext {
+    height: 78px;
+    width: 20px;
+    position: absolute;
+    background-color: #FFF;
+}
+#sThumbPrev {
+    left: 0;
+    top: 0;
+    z-index: 2;
+    border-right: 1px solid #CCC;
+    background-position: -105px 20px;
+}
+#sThumbNext {
+    right: 0;
+    top: 0;
+    z-index: 2;
+    border-left: 1px solid #CCC;
+    background-position: -127px 20px;
+}
+
+/*
+*
+* Image Description Styles
+*
+*/
+.selider p {
+    background: #000;
+    background: rgba(0, 0, 0, 0.5) !important;
+    padding: 5px 10px;
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
+    color: #FFF;
+    font-family: Helvetica;
     border-radius: 5px;
 }
