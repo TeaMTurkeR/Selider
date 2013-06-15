@@ -18,12 +18,16 @@
   </head>
   <body>
    <style>
-    /* Selightbox v1.1
-   http://wwww.sercaneraslan.com */
+ /*
+*
+* Selider version 2.0
+* sercaneraslan.com
+*
+*/
 .selider {
     overflow: hidden;
     position: relative;
-    margin: 10px;
+    border-radius: 5px;
 }
 .selider ul {
     position: absolute;
@@ -35,20 +39,65 @@
     float: left;
     position: relative;
 }
-.selider li p {
-    background: #000;
-    background: rgba(0, 0, 0, 0.5) !important;
-    padding: 5px 10px;
+
+/*
+*
+* Genaral Styles
+*
+*/
+#sPaging li,
+#sPaging .on,
+#sPrev,
+#sNext,
+#sThumbPrev,
+#sThumbNext {
+    background: url('../images/seliderIcons.png') no-repeat;
+}
+
+#sPrev,
+#sNext,
+#sPaging li,
+#sThumbnail li,
+#sThumbPrev,
+#sThumbNext,
+.selider p {
     cursor: pointer;
+}
+
+/*
+*
+* Prev and Next Icon Styles
+*
+*/
+#sPrev,
+#sNext {
+    height: 40px;
+    width: 37px;
     position: absolute;
+    top: 50%;
+    margin-top: -20px; /* height / 2 */
+    z-index: 2;
+}
+#sPrev {
     left: 10px;
-    bottom: 5px;
-    color: #FFF;
-    font-family: Helvetica;
+}
+#sNext {
+    right: 10px;
+    background-position: -40px 0;
+}
+
+/*
+*
+* Paging Styles
+*
+*/
+#sPaging {
+    margin: 10px 0;
 }
 #sPaging ul {
     height: 18px;
-    margin: 5px auto;
+    margin: 0 auto;
+    padding: 0;
 }
 #sPaging li {
     display: block;
@@ -56,80 +105,253 @@
     width: 18px;
     float: left;
     margin-right: 5px;
-    background: url('https://raw.github.com/skatersercan/Selider/master/images/pagination.png') no-repeat;
+    background-position: -80px 0;
 }
 #sPaging .on {
-    background: url('https://raw.github.com/skatersercan/Selider/master/images/pagination.png') no-repeat 0 -27px;
+    background-position: -80px -22px;
 }
-.selider, .selider p {
-    -moz-border-radius: 5px; 
-    -webkit-border-radius: 5px; 
+
+/*
+*
+* Thumbnail Styles
+*
+*/
+#sThumbnail {
+    background: #E1E1E1;
+    padding: 7px 0 10px 20px;
+    margin-top: 15px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    height: 58px;
+}
+#sThumbContainer {
+    position: relative;
+    margin-left: 11px;
+}
+#sThumbnail ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+}
+#sThumbnail li {
+    display: block;
+    height: 50px;
+    width: 100px;
+    float: left;
+    margin: 0 0 10px 11px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    padding: 5px;
+}
+#sThumbnail li:first-child {
+    margin-left: 0;
+}
+#sThumbPrev,
+#sThumbNext {
+    height: 78px;
+    width: 20px;
+    position: absolute;
+    background-color: #FFF;
+}
+#sThumbPrev {
+    left: 0;
+    top: 0;
+    z-index: 2;
+    border-right: 1px solid #CCC;
+    background-position: -105px 20px;
+}
+#sThumbNext {
+    right: 0;
+    top: 0;
+    z-index: 2;
+    border-left: 1px solid #CCC;
+    background-position: -127px 20px;
+}
+
+/*
+*
+* Image Description Styles
+*
+*/
+.selider p {
+    background: #000;
+    background: rgba(0, 0, 0, 0.5) !important;
+    padding: 5px 10px;
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
+    color: #FFF;
+    font-family: Helvetica;
     border-radius: 5px;
 }
-ul li {
-    padding: 0 !important;
-    list-style: none !important;
-}
   </style>
+<style>
+  #mySlider {
+      width: 670px;
+      height: 350px;
+  }
+  #sThumbnail {
+      width: 648px;
+  }
+</style>
   <script>
-    // Slider v1.1
-// http://wwww.sercaneraslan.com
-$(function(){
-    $.fn.selider = function(options){
-        var i = 0,
-            timing,
-            el = $(this),
-            imageCount = el.children().children().length,
+/*
+*
+* Selider v2.0
+* sercaneraslan.com
+*
+*/
+$(function() {
+    $.fn.selider = function( options ) {
 
+        var el = $(this),
+            elWidth = el.width(),
+            elMenu = el.find("ul"),
+            elItemCount = elMenu.find("li").length,
+            elFakeItemCount = elItemCount + 1,
+            thumb = $("#sThumbnail"),
+            thumbMenu = thumb.find("ul"),
+            thumbMenuItem = thumbMenu.find("li"),
+            thumbPrev = $("#sThumbPrev"),
+            thumbNext = $("#sThumbNext"),
+            thumbPrevNextTotalWidth = thumbPrev.outerWidth(true) * 2,
+            thumbBorderWidth = parseInt( thumb.css("border-left-width") ) * 2,
+            thumbContainerMarginLeft = parseInt( $("#sThumbContainer").css("margin-left") ),
+            thumbSlidePosition = elWidth - ( thumbPrevNextTotalWidth + thumbBorderWidth + thumbContainerMarginLeft ),
+            thumbTotalCount = Math.round( elItemCount / ( thumbSlidePosition / thumbMenuItem.outerWidth(true) ) ),
+            thumbCurrentCount = 0,
+            i = 0,
+            j = 0,
             settings = $.extend({
-                'height' : 400,
-                'width'  : 400,
-                'speed'  : 4000,
-                'paging' : true
+                "speed"     : 4000,
+                "pause"     : true,
+                "nextPrev"  : true,
+                "paging"    : false,
+                "thumbnail" : false
             }, options),
+            paging,
+            pagingMenu,
+            pagingMenuItem,
+            timing,
+            hoverTiming,
+            nothing;
 
-            slide = function(){
-                (i == imageCount) ? i = 0 : i = i;
+            slide = function() {
 
-                $("#sPaging li").eq(i).addClass("on").siblings().removeClass("on");
+                clearTimeout(timing);
 
-                el.children().animate({left: -i * settings.width}, 300);
+                if ( i == elFakeItemCount ) {
+                    i = 0;
+                    elMenu.css("left", 0);
+                    slide();
+                } else {
+                    timing = setTimeout( slide, settings.speed );
+                }
 
-                timing = setTimeout(slide,settings.speed);
+                if ( settings.paging ) {
+                    pagingMenuItem.eq( i == elItemCount ? 0 : i ).addClass("on").siblings().removeClass("on");
+                }
+
+                elMenu.animate({ left: -i * elWidth }, 500);
 
                 i++;
             },
-            paging = function(){
-                if (settings.paging){
-                    el.after('<div id="sPaging"><ul></ul></div>');
 
-                    for (i; i < imageCount; i++){
-                        $("#sPaging ul").append('<li></li>');
+            thumbnail = function() {
+
+                settings.paging = false;
+
+                thumbPrev.click(function() {
+                    if ( thumbCurrentCount > 0 ) {
+                        --thumbCurrentCount;
+                        thumbMenu.animate({left: -thumbSlidePosition * thumbCurrentCount}, 400);
+                    }
+                });
+
+                thumbNext.click(function() {
+                    if ( thumbTotalCount > thumbCurrentCount ) {
+                        ++thumbCurrentCount;
+                        thumbMenu.animate({left: -thumbSlidePosition * thumbCurrentCount}, 400);
                     };
+                });
 
-                    $("#sPaging").css('width', settings.width)
-                                 .children().css('width', imageCount * 23);
+                thumbMenuItem.click(function() {
+                    i = $(this).index();
+                    slide();
+                });
+            },
 
-                    $("#sPaging li").click(function(){
-                        clearTimeout(timing);
-                        i = $(this).index();
-                        slide();
-                    });
-                };
+            paging = function() {
+
+                el.after('<div id="sPaging"><ul></ul></div>');
+
+                paging = $("#sPaging"),
+                pagingMenu = paging.find("ul");
+
+                for ( j; j < elItemCount; j++ ) {
+                    pagingMenu.append("<li/>");
+                }
+
+                pagingMenuItem = pagingMenu.find("li");
+
+                paging.css("width", elWidth);
+                pagingMenu.css("width", elItemCount * pagingMenuItem.outerWidth(true));
+
+                pagingMenuItem.click(function() {
+                    i = $(this).index();
+                    slide();
+                });
+            },
+
+            nextPrev = function() {
+
+                el.append('<div id="sPrev"></div><div id="sNext"></div>');
+
+                $("#sPrev").click(function() {
+                    i = ( i != 1 ) ? i - 2 : 0;
+                    slide();
+                });
+
+                $("#sNext").click(function() {
+                    slide();
+                });
+            },
+
+            pause = function() {
+
+                el.hover(function() {
+                        hoverTiming = setInterval(function() {
+                            clearTimeout( timing );
+                        }, settings.speed / 2 );
+                    },function() {
+                        clearInterval( hoverTiming );
+                        timing = setTimeout( slide, settings.speed );
+                });
             };
 
-        el.css({'height': settings.height, 'width': settings.width})
-          .children().css('width', settings.width * imageCount);
+        elMenu.css( "width", elWidth * elFakeItemCount )
+              .append( elMenu.find("li:first").clone() );    // For Completion of The Slide
 
-        paging();
+        settings.thumbnail  ? thumbnail()   : nothing;
+        settings.paging     ? paging()      : nothing;
+        settings.nextPrev   ? nextPrev()    : nothing;
+        settings.pause      ? pause()       : nothing;
+
         slide();
+
+        return el;
     };
-})
+});
   </script>
   
   <script>
         $(function(){
-            $("#mySlider").selider({'height' : 350, 'width' : 670});
+            $("#mySlider").selider({
+                "thumbnail"  : true
+            });
         });
   </script>
   
@@ -144,31 +366,69 @@ $(function(){
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-        
-<div id="mySlider" class="selider">
-    <ul>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider1.png" alt="Ice Age"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 2</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider2.png" alt="Ice Age 2"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 3</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider3.png" alt="Ice Age 3"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 4</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider4.png" alt="Ice Age 4"/>
-        </li>
-        <li>
-            <p>Ice Age - Dawn Of The Dinosaurs 5</p>
-            <img src="https://raw.github.com/skatersercan/Selider/master/images/slider5.png" alt="Ice Age 5"/>
-        </li>
-    </ul>
-</div>
+
+    <div id="mySlider" class="selider">
+        <ul>
+            <li>
+                <p>Ice Age - Dawn Of The Dinosaurs</p>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider1.png" alt="Ice Age 1"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider2.png" alt="Ice Age 2"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider3.png" alt="Ice Age 3"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider4.png" alt="Ice Age 4"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider5.png" alt="Ice Age 5"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider6.png" alt="Ice Age 6"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider7.png" alt="Ice Age 7"/>
+            </li>
+            <li>
+                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider8.png" alt="Ice Age 8"/>
+            </li>
+        </ul>
+    </div>
+
+    <div id="sThumbnail">
+        <div id="sThumbPrev"></div>
+        <div id="sThumbContainer">
+            <ul>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb1.png" alt="Ice Age 1"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb2.png" alt="Ice Age 2"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb3.png" alt="Ice Age 3"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb4.png" alt="Ice Age 4"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb5.png" alt="Ice Age 5"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb6.png" alt="Ice Age 6"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb7.png" alt="Ice Age 7"/>
+                </li>
+                <li>
+                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb8.png" alt="Ice Age 8"/>
+                </li>
+            </ul>
+        </div>
+        <div id="sThumbNext"></div>
+    </div>
 
 <h3>Selider Nedir?</h3>
 
