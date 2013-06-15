@@ -62,7 +62,7 @@ Thumbmnail'ın genişliğini verelim.
     width: 648px;
 }
 ```
-ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını eklemeniz gerekir.
+ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını ekleyelim.
 
 ```
 <!-- Selider HTML'i -->
