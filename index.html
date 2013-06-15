@@ -4,7 +4,6 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
@@ -14,501 +13,172 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Selider - Küçük bir slider kütüphanesi</title>
+    <title>Selider by sercaneraslan</title>
   </head>
+
   <body>
-   <style>
- /*
-*
-* Selider version 2.0
-* sercaneraslan.com
-*
-*/
-.selider {
-    overflow: hidden;
-    position: relative;
-    border-radius: 5px;
-}
-.selider ul {
-    position: absolute;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.selider li { 
-    float: left;
-    position: relative;
-}
-
-/*
-*
-* Genaral Styles
-*
-*/
-#sPaging li,
-#sPaging .on,
-#sPrev,
-#sNext,
-#sThumbPrev,
-#sThumbNext {
-    background: url('https://raw.github.com/sercaneraslan/Selider/master/images/seliderIcons.png') no-repeat;
-}
-
-#sPrev,
-#sNext,
-#sPaging li,
-#sThumbnail li,
-#sThumbPrev,
-#sThumbNext,
-.selider p {
-    cursor: pointer;
-}
-
-/*
-*
-* Prev and Next Icon Styles
-*
-*/
-#sPrev,
-#sNext {
-    height: 40px;
-    width: 37px;
-    position: absolute;
-    top: 50%;
-    margin-top: -20px; /* height / 2 */
-    z-index: 2;
-}
-#sPrev {
-    left: 10px;
-}
-#sNext {
-    right: 10px;
-    background-position: -40px 0;
-}
-
-/*
-*
-* Paging Styles
-*
-*/
-#sPaging {
-    margin: 10px 0;
-}
-#sPaging ul {
-    height: 18px;
-    margin: 0 auto;
-    padding: 0;
-}
-#sPaging li {
-    display: block;
-    height: 18px;
-    width: 18px;
-    float: left;
-    margin-right: 5px;
-    background-position: -80px 0;
-}
-#sPaging .on {
-    background-position: -80px -22px;
-}
-
-/*
-*
-* Thumbnail Styles
-*
-*/
-#sThumbnail {
-    background: #E1E1E1;
-    padding: 7px 0 10px 20px;
-    margin-top: 15px;
-    border: 1px solid #CCC;
-    border-radius: 5px;
-    position: relative;
-    overflow: hidden;
-    height: 58px;
-}
-#sThumbContainer {
-    position: relative;
-    margin-left: 11px;
-}
-#sThumbnail ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    position: absolute;
-}
-#sThumbnail li {
-    display: block;
-    height: 50px;
-    width: 100px;
-    float: left;
-    margin: 0 0 10px 11px;
-    background-color: #FFF;
-    border: 1px solid #CCC;
-    padding: 5px !important;
-}
-#sThumbnail li:first-child {
-    margin-left: 0;
-}
-#sThumbPrev,
-#sThumbNext {
-    height: 78px;
-    width: 20px;
-    position: absolute;
-    background-color: #FFF;
-}
-#sThumbPrev {
-    left: 0;
-    top: 0;
-    z-index: 2;
-    border-right: 1px solid #CCC;
-    background-position: -105px 20px;
-}
-#sThumbNext {
-    right: 0;
-    top: 0;
-    z-index: 2;
-    border-left: 1px solid #CCC;
-    background-position: -127px 20px;
-}
-
-/*
-*
-* Image Description Styles
-*
-*/
-.selider p {
-    background: #000;
-    background: rgba(0, 0, 0, 0.5) !important;
-    padding: 5px 10px;
-    position: absolute;
-    left: 10px;
-    bottom: 5px;
-    color: #FFF;
-    font-family: Helvetica;
-    border-radius: 5px;
-}
-  </style>
-<style>
-  #mySlider {
-      width: 670px;
-      height: 350px;
-  }
-  #sThumbnail {
-      width: 648px;
-  }
-  .selider li {
-    list-style: none !important;
-    padding: 0 !important;
-  }
-</style>
-  <script>
-/*
-*
-* Selider v2.0
-* sercaneraslan.com
-*
-*/
-$(function() {
-    $.fn.selider = function( options ) {
-
-        var el = $(this),
-            elWidth = el.width(),
-            elMenu = el.find("ul"),
-            elItemCount = elMenu.find("li").length,
-            elFakeItemCount = elItemCount + 1,
-            thumb = $("#sThumbnail"),
-            thumbMenu = thumb.find("ul"),
-            thumbMenuItem = thumbMenu.find("li"),
-            thumbPrev = $("#sThumbPrev"),
-            thumbNext = $("#sThumbNext"),
-            thumbPrevNextTotalWidth = thumbPrev.outerWidth(true) * 2,
-            thumbBorderWidth = parseInt( thumb.css("border-left-width") ) * 2,
-            thumbContainerMarginLeft = parseInt( $("#sThumbContainer").css("margin-left") ),
-            thumbSlidePosition = elWidth - ( thumbPrevNextTotalWidth + thumbBorderWidth + thumbContainerMarginLeft ),
-            thumbTotalCount = Math.round( elItemCount / ( thumbSlidePosition / thumbMenuItem.outerWidth(true) ) ),
-            thumbCurrentCount = 0,
-            i = 0,
-            j = 0,
-            settings = $.extend({
-                "speed"     : 4000,
-                "pause"     : true,
-                "nextPrev"  : true,
-                "paging"    : false,
-                "thumbnail" : false
-            }, options),
-            paging,
-            pagingMenu,
-            pagingMenuItem,
-            timing,
-            hoverTiming,
-            nothing;
-
-            slide = function() {
-
-                clearTimeout(timing);
-
-                if ( i == elFakeItemCount ) {
-                    i = 0;
-                    elMenu.css("left", 0);
-                    slide();
-                } else {
-                    timing = setTimeout( slide, settings.speed );
-                }
-
-                if ( settings.paging ) {
-                    pagingMenuItem.eq( i == elItemCount ? 0 : i ).addClass("on").siblings().removeClass("on");
-                }
-
-                elMenu.animate({ left: -i * elWidth }, 500);
-
-                i++;
-            },
-
-            thumbnail = function() {
-
-                settings.paging = false;
-
-                thumbPrev.click(function() {
-                    if ( thumbCurrentCount > 0 ) {
-                        --thumbCurrentCount;
-                        thumbMenu.animate({left: -thumbSlidePosition * thumbCurrentCount}, 400);
-                    }
-                });
-
-                thumbNext.click(function() {
-                    if ( thumbTotalCount > thumbCurrentCount ) {
-                        ++thumbCurrentCount;
-                        thumbMenu.animate({left: -thumbSlidePosition * thumbCurrentCount}, 400);
-                    };
-                });
-
-                thumbMenuItem.click(function() {
-                    i = $(this).index();
-                    slide();
-                });
-            },
-
-            paging = function() {
-
-                el.after('<div id="sPaging"><ul></ul></div>');
-
-                paging = $("#sPaging"),
-                pagingMenu = paging.find("ul");
-
-                for ( j; j < elItemCount; j++ ) {
-                    pagingMenu.append("<li/>");
-                }
-
-                pagingMenuItem = pagingMenu.find("li");
-
-                paging.css("width", elWidth);
-                pagingMenu.css("width", elItemCount * pagingMenuItem.outerWidth(true));
-
-                pagingMenuItem.click(function() {
-                    i = $(this).index();
-                    slide();
-                });
-            },
-
-            nextPrev = function() {
-
-                el.append('<div id="sPrev"></div><div id="sNext"></div>');
-
-                $("#sPrev").click(function() {
-                    i = ( i != 1 ) ? i - 2 : 0;
-                    slide();
-                });
-
-                $("#sNext").click(function() {
-                    slide();
-                });
-            },
-
-            pause = function() {
-
-                el.hover(function() {
-                        hoverTiming = setInterval(function() {
-                            clearTimeout( timing );
-                        }, settings.speed / 2 );
-                    },function() {
-                        clearInterval( hoverTiming );
-                        timing = setTimeout( slide, settings.speed );
-                });
-            };
-
-        elMenu.css( "width", elWidth * elFakeItemCount )
-              .append( elMenu.find("li:first").clone() );    // For Completion of The Slide
-
-        settings.thumbnail  ? thumbnail()   : nothing;
-        settings.paging     ? paging()      : nothing;
-        settings.nextPrev   ? nextPrev()    : nothing;
-        settings.pause      ? pause()       : nothing;
-
-        slide();
-
-        return el;
-    };
-});
-  </script>
-  
-  <script>
-        $(function(){
-            $("#mySlider").selider({
-                "thumbnail"  : true
-            });
-        });
-  </script>
-  
     <header>
       <div class="inner">
         <h1>Selider</h1>
         <h2>Küçük bir slider kütüphanesi...</h2>
-        <a href="https://github.com/skatersercan/Selider" class="button"><small>Sercan Eraslan </small>GitHub</a>
+        <a href="https://github.com/sercaneraslan/Selider" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
 
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
+          <h3>
+<a name="selider-nedir" class="anchor" href="#selider-nedir"><span class="octicon octicon-link"></span></a>Selider Nedir?</h3>
 
-    <div id="mySlider" class="selider">
-        <ul>
-            <li>
-                <p>Ice Age - Dawn Of The Dinosaurs</p>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider1.png" alt="Ice Age 1"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider2.png" alt="Ice Age 2"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider3.png" alt="Ice Age 3"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider4.png" alt="Ice Age 4"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider5.png" alt="Ice Age 5"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider6.png" alt="Ice Age 6"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider7.png" alt="Ice Age 7"/>
-            </li>
-            <li>
-                <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderImages/slider8.png" alt="Ice Age 8"/>
-            </li>
-        </ul>
-    </div>
+<p>Hızlı çalışan ve kullanması pratik olan bir Slider'dır. Tarayıcıların hepsinde çalışır. Büyük kütüphaneleri kullanma derdinize son verir.</p>
 
-    <div id="sThumbnail">
-        <div id="sThumbPrev"></div>
-        <div id="sThumbContainer">
-            <ul>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb1.png" alt="Ice Age 1"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb2.png" alt="Ice Age 2"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb3.png" alt="Ice Age 3"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb4.png" alt="Ice Age 4"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb5.png" alt="Ice Age 5"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb6.png" alt="Ice Age 6"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb7.png" alt="Ice Age 7"/>
-                </li>
-                <li>
-                    <img src="https://raw.github.com/sercaneraslan/Selider/master/images/sliderThumb/thumb8.png" alt="Ice Age 8"/>
-                </li>
-            </ul>
-        </div>
-        <div id="sThumbNext"></div>
-    </div>
-
-<h3>Selider Nedir?</h3>
-
-<p>Hızlı çalışan ve kullanması pratik olan bir Slider'dır. Tarayıcıların hepsinde çalışır. Büyük kütüphaneleri kullanma derdinize son verir. </p>
-
-<h3>Nasıl Kullanılır?</h3>
+<h3>
+<a name="nasl-kullanlr" class="anchor" href="#nasl-kullanlr"><span class="octicon octicon-link"></span></a>Nasıl Kullanılır?</h3>
 
 <p>İlk yapılması gereken dosyaları sayfamıza çağırmak.</p>
 
-<pre><code>&lt;link rel="stylesheet" href="selider.css" /&gt;
-&lt;script src="http://code.jquery.com/jquery-latest.js"&gt;&lt;/script&gt; 
-&lt;script src="selider.js"&gt;&lt;/script&gt;
+<pre><code>&lt;link rel="stylesheet" type="text/css" href="styles/selider.css" /&gt;
+&lt;script type="text/javascript" src="scripts/jquery-1.10.1.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="scripts/selider.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<p>Sonra "selider" class'ı olan bir div ekliyoruz. id'sini istediğiniz isimle verebilirsiniz. Daha sonra ul li içerisine img etiketlerini ekliyoruz ve görsellerin kaynağını yazıyoruz.</p>
-<p>Eğer görselinizin altında yazı çıksın istiyorsanız li etiketi içine p etiketi ekleyebilirsiniz.</p>
+<p>Sonra "selider" class'ı olan bir div ekliyoruz. id'sini istediğiniz isimle verebilirsiniz. Daha sonra ul li içerisine img etiketlerini ekliyoruz ve görsellerin kaynağını yazıyoruz. Eğer li etiketlerinin içine p etiketi koyarsanız bu etiket içinde ki metin/link slide ile birlikte gözükecektir.</p>
+
 <pre><code>&lt;div id="mySlider" class="selider"&gt;
     &lt;ul&gt;
         &lt;li&gt;
-            &lt;p&gt;Burada ki içerik görsel üzerinde çıkacak&lt;/p&gt;
-            &lt;img src="slider1.png" alt="slider1"/&gt;
+            &lt;p&gt;Ice Age - Dawn Of The Dinosaurs&lt;/p&gt;
+            &lt;img src="images/sliderImages/slider1.png" alt="Ice Age 1"/&gt;
         &lt;/li&gt;
         &lt;li&gt;
-            &lt;img src="slider2.png" alt="slider2"/&gt;
+            &lt;img src="images/sliderImages/slider2.png" alt="Ice Age 2"/&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
 &lt;/div&gt;
 </code></pre>
 
-<p>Slider'ın ekleneceği sayfanın JavaScript dosyasına aşağıda ki kod eklenir.</p>
+<p>CSS dosyamıza Slider'ın yüksekliğini ve genişliğini ekliyoruz.</p>
 
-<pre><code>$("#mySlider").selider({
-                        'height' : 350, 
-                        'width'  : 670
-});
+<pre><code>#mySlider {
+    width: 670px;
+    height: 350px;
+}
 </code></pre>
 
-<p>id HTML'de belirttiğimiz id 'dir. Slider'ın yüksekliğini belirlemek için "height"ı , genişliği belirlemek için "width"i kullanabilirsiniz.</p>
+<p>Son olarak Slider'ın ekleneceği sayfanın JavaScript dosyasına aşağıda ki kodu ekliyoruz.</p>
+
+<pre><code>$("#mySlider").selider();
+</code></pre>
 
 <p>İşte bu kadar artık slider'ınız çalışıyor!</p>
 
-<h3>Slider'ın Geçiş Hızı</h3>
+<h3>
+<a name="thumbnail" class="anchor" href="#thumbnail"><span class="octicon octicon-link"></span></a>Thumbnail</h3>
 
-<p>Slider'ın geçiş hızını "speed" ile belirleyebilirsiniz. Milisaniye cinsinden değer alır. (1000 milisaniye = 1 saniye) Varsayılan olarak 4000 milisaniye yani 4 saniyedir. "speed"i kullanmazsanız slider 4 saniyede bir değişecektir.</p>
+<p>Varsayılan olarak "false" değerini alır. Thumbnail kullanmak isterseniz "thumbnail" özelliğini "true" olarak değiştirmeniz gerekir.</p>
 
 <pre><code>$("#mySlider").selider({
-                        'height' : 350, 
-                        'width'  : 670,
-                        'speed'  : 4000    
+    "thumbnail" : true
 });
 </code></pre>
 
-<h3>Sayfalama Tercihi</h3>
+<p>Thumbmnail'ın genişliğini verelim.</p>
 
-<p>Eğer Slider'ınızda sayfalama istemiyorsanız "paging"i kullanabilirsiniz. Varsayılan olarak "true" değerini alır ve sayfalama kullanılır, kapatmak isterseniz değeri "false" yapmanız yeterli.</p>
+<pre><code>#sThumbnail {
+    width: 648px;
+}
+</code></pre>
+
+<p>ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını ekleyelim.</p>
+
+<pre><code>&lt;!-- Selider HTML'i --&gt;
+&lt;div id="mySlider" class="selider"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;
+            &lt;img src="images/sliderImages/slider1.png" alt="Ice Age 1"/&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;img src="images/sliderImages/slider2.png" alt="Ice Age 2"/&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;!-- Selider HTML'i --&gt;
+
+&lt;!-- Thumbnail HTML'i --&gt;
+&lt;div id="sThumbnail"&gt;
+    &lt;div id="sThumbPrev"&gt;&lt;/div&gt;
+    &lt;div id="sThumbContainer"&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;img src="images/sliderThumb/thumb1.png" alt="Ice Age 1"/&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;img src="images/sliderThumb/thumb2.png" alt="Ice Age 2"/&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div id="sThumbNext"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Thumbnail HTML'i --&gt;
+</code></pre>
+
+<p>"sThumbnail" Thumbnail kutusunun kapsayıcısıdır. "sThumbPrev" sol butonun, "sThumbNext" ise sağ butonun kapsayıcısıdır. "sThumbContainer" tüm küçük fotoğrafların/resimlerin kapsayıcısıdır. Ul li içerisinde ki img etiketlerinin kaynağına da thumbnailler için olan küçük fotoğrafları/resimleri eklenir.</p>
+
+<h3>
+<a name="paging" class="anchor" href="#paging"><span class="octicon octicon-link"></span></a>Paging</h3>
+
+<p>Varsayılan olarak "false" değerini alır. Eğer Slider'ınızda sayfalama kullanmak isterseniz "paging" özelliğini "true" olarak değiştirmeniz yeterlidir.</p>
 
 <pre><code>$("#mySlider").selider({
-                        'height' : 350, 
-                        'width'  : 670,
-                        'paging'  : true    
+    "paging" : true
 });
 </code></pre>
 
+<h3>
+<a name="speed" class="anchor" href="#speed"><span class="octicon octicon-link"></span></a>Speed</h3>
+
+<p>Varsayılan olarak "4000" milisaniyedir ( 4000 milisaniye = 4 saniye ). Slider'ın geçiş hızını değiştirmek isterseniz "speed" değerini değiştirebilirsiniz.</p>
+
+<pre><code>$("#mySlider").selider({
+    "speed"  : 6000    
+});
+</code></pre>
+
+<h3>
+<a name="pause" class="anchor" href="#pause"><span class="octicon octicon-link"></span></a>Pause</h3>
+
+<p>Varsayılan olarak "true" değerini alır. Mouse ile Slider üzerine gelince Slide'ın durmasını istemiyorsanız "pause" özelliğini "false" yaparak devre dışı bırakabilirsiniz.</p>
+
+<pre><code>$("#mySlider").selider({
+    "pause" : false
+});
+</code></pre>
+
+<h3>
+<a name="nextprev" class="anchor" href="#nextprev"><span class="octicon octicon-link"></span></a>nextPrev</h3>
+
+<p>Varsayılan olarak "true" değerini alır. Slide üzerinde sağ ve sol oklarının olmasını istemiyorsanız "pause" özelliğini "false" yaparak devre dışı bırakabilirsiniz. (Sağ ve sol oklar Slide'ın bir öncesine veya bir sonrasına gitmek için kullanılır.)</p>
+
+<pre><code>$("#mySlider").selider({
+    "nextPrev" : false
+});
+</code></pre>
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/skatersercan/Selider/zipball/master" class="button">
-            <small>İndir</small>
-            .zip
+          <a href="https://github.com/sercaneraslan/Selider/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
           </a>
-          <a href="https://github.com/skatersercan/Selider/tarball/master" class="button">
-            <small>İndir</small>
-            .tar.gz
+          <a href="https://github.com/sercaneraslan/Selider/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
           </a>
 
-          <p class="repo-owner">Proje Sahibi <a href="http://www.sercaneraslan.com/">sercaneraslan.com</a></p>
+          <p class="repo-owner"><a href="https://github.com/sercaneraslan/Selider"></a> is maintained by <a href="https://github.com/sercaneraslan">sercaneraslan</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
