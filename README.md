@@ -36,7 +36,7 @@ CSS dosyamıza Slider'ın yüksekliğini ve genişliğini ekliyoruz.
 }
 ```
 
-Son olarak Slider'ın ekleneceği sayfanın JavaScript dosyasına aşağıda ki kodu ekliyoruz. ( id, HTML'de belirttiğimiz id 'dir. )
+Son olarak Slider'ın ekleneceği sayfanın JavaScript dosyasına aşağıda ki kodu ekliyoruz.
 
 ```
 $("#mySlider").selider();
@@ -57,6 +57,7 @@ $("#mySlider").selider({
 ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını eklemeniz gerekir.
 
 ```
+<!-- Selider HTML'i -->
 <div id="mySlider" class="selider">
     <ul>
         <li>
@@ -67,6 +68,7 @@ ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını eklemeniz
         </li>
     </ul>
 </div>
+<!-- Selider HTML'i -->
 
 <!-- Thumbnail HTML'i -->
 <div id="sThumbnail">
@@ -86,11 +88,11 @@ ve Slider'ı eklediğiniz div'in sonuna aşağıda ki HTML kalıbını eklemeniz
 <!-- Thumbnail HTML'i -->
 ```
 
-"sThumbnail" Thumbnail kutusunun kapsayıcısıdır. "sThumbPrev" sol butonun, "sThumbNext" ise sağ butonun kapsayıcısıdır. "sThumbContainer" tüm küçük fotoğrafların/resimlerin kapsayıcısıdır. Ul li içerisinde ki img etiketlerinin kaynağına da thumbnailler için olan küçük fotoğrafları/resimleri ekliyoruz.
+"sThumbnail" Thumbnail kutusunun kapsayıcısıdır. "sThumbPrev" sol butonun, "sThumbNext" ise sağ butonun kapsayıcısıdır. "sThumbContainer" tüm küçük fotoğrafların/resimlerin kapsayıcısıdır. Ul li içerisinde ki img etiketlerinin kaynağına da thumbnailler için olan küçük fotoğrafları/resimleri eklenir.
 
 
 ### Paging
-Varsayılan olarak "false" değerini alır. Eğer Slider'ınızda sayfalama istiyorsanız "paging"i kullanabilirsiniz. Kullanmak isterseniz "paging" özelliğini "true" olarak değiştirmeniz gerekir.
+Varsayılan olarak "false" değerini alır. Eğer Slider'ınızda sayfalama kullanmak isterseniz "paging" özelliğini "true" olarak değiştirmeniz yeterlidir.
 
 ```
 $("#mySlider").selider({
@@ -100,7 +102,7 @@ $("#mySlider").selider({
 
 
 ### Speed
-Varsayılan olarak 4 saniyedir. Slider'ın geçiş hızını "speed" ile belirleyebilirsiniz. Milisaniye cinsinden değer alır (1000 milisaniye = 1 saniye). "speed" değerini değiştirmezseniz slider 4 saniyede bir çalışacaktır.
+Varsayılan olarak "4000" milisaniyedir ( 4000 milisaniye = 4 saniye ). Slider'ın geçiş hızını değiştirmek isterseniz "speed" değerini değiştirebilirsiniz.
 
 ```
 $("#mySlider").selider({
