@@ -37,7 +37,7 @@ $(function() {
             pagingMenuItem,
             timing,
             hoverTiming,
-            nothing;
+            nothing,
 
             slide = function() {
 
