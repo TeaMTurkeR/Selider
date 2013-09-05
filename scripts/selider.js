@@ -1,6 +1,6 @@
 /*
 *
-* Selider v2.0
+* Selider v2.0.1
 * sercaneraslan.com
 *
 */
