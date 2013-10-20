@@ -37,6 +37,7 @@ $.fn.selider = function( options ) {
         pagingHtml = '<div id="sPaging"><ul/></div>',
         paging,
         pagingMenu,
+        pagingMenuWidth,
         pagingMenuItem,
         timing,
         hoverTiming,
@@ -99,9 +100,10 @@ $.fn.selider = function( options ) {
             }
 
             pagingMenuItem = pagingMenu.find("li");
+            pagingMenuWidth = elItemCount * pagingMenuItem.outerWidth(sTrue);
 
-            paging.css("width", elWidth);
-            pagingMenu.css("width", elItemCount * pagingMenuItem.outerWidth(sTrue));
+            paging.css("width", settings.pagingInSlider ? pagingMenuWidth : elWidth);
+            pagingMenu.css("width", pagingMenuWidth);
 
             pagingMenuItem.click(function() {
                 i = $(this).index();
