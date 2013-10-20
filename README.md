@@ -108,6 +108,15 @@ $("#mySlider").selider({
 });
 ```
 
+### PagingInSlider
+Varsayılan olarak "false" değerini alır. Eğer sayfalamayı Slider'ın içinde göstermek isterseniz "pagingInSlider" özelliğini "true" olarak değiştirmeniz yeterlidir.
+
+```
+$("#mySlider").selider({
+    "paging" : true,
+    "pagingInSlider" : true
+});
+```
 
 ### Speed
 Varsayılan olarak "4000" milisaniyedir ( 4000 milisaniye = 4 saniye ). Slider'ın geçiş hızını değiştirmek isterseniz "speed" değerini değiştirebilirsiniz.
