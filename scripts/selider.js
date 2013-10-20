@@ -1,6 +1,6 @@
 /*
 *
-* Selider v2.0.1
+* Selider v2.0.2
 * sercaneraslan.com
 *
 */
@@ -16,23 +16,25 @@ $.fn.selider = function( options ) {
         thumbMenuItem = thumbMenu.find("li"),
         thumbPrev = $("#sThumbPrev"),
         thumbNext = $("#sThumbNext"),
-        shortTrue = true,
-        shortFalse = false,
-        thumbPrevNextTotalWidth = thumbPrev.outerWidth(shortTrue) * 2,
+        sTrue = true,
+        sFalse = false,
+        thumbPrevNextTotalWidth = thumbPrev.outerWidth(sTrue) * 2,
         thumbBorderWidth = parseInt( thumb.css("border-left-width") ) * 2,
         thumbContainerMarginLeft = parseInt( $("#sThumbContainer").css("margin-left") ),
         thumbSlidePosition = elWidth - ( thumbPrevNextTotalWidth + thumbBorderWidth + thumbContainerMarginLeft ),
-        thumbTotalCount = Math.round( elItemCount / ( thumbSlidePosition / thumbMenuItem.outerWidth(shortTrue) ) ),
+        thumbTotalCount = Math.round( elItemCount / ( thumbSlidePosition / thumbMenuItem.outerWidth(sTrue) ) ),
         thumbCurrentCount = 0,
         i = 0,
         j = 0,
         settings = $.extend({
-            "speed"     : 4000,
-            "pause"     : shortTrue,
-            "nextPrev"  : shortTrue,
-            "paging"    : shortFalse,
-            "thumbnail" : shortFalse
+            "speed"             : 4000,
+            "pause"             : sTrue,
+            "nextPrev"          : sTrue,
+            "paging"            : sFalse,
+            "pagingInSlider"    : sFalse,
+            "thumbnail"         : sFalse
         }, options),
+        pagingHtml = '<div id="sPaging"><ul/></div>',
         paging,
         pagingMenu,
         pagingMenuItem,
@@ -63,7 +65,7 @@ $.fn.selider = function( options ) {
 
         thumbnail = function() {
 
-            settings.paging = shortFalse;
+            settings.paging = sFalse;
 
             thumbPrev.click(function() {
                 if ( thumbCurrentCount > 0 ) {
@@ -87,7 +89,7 @@ $.fn.selider = function( options ) {
 
         paging = function() {
 
-            el.after('<div id="sPaging"><ul/></div>');
+            settings.pagingInSlider ? el.append(pagingHtml) : el.after(pagingHtml);
 
             paging = $("#sPaging"),
             pagingMenu = paging.find("ul");
@@ -99,7 +101,7 @@ $.fn.selider = function( options ) {
             pagingMenuItem = pagingMenu.find("li");
 
             paging.css("width", elWidth);
-            pagingMenu.css("width", elItemCount * pagingMenuItem.outerWidth(shortTrue));
+            pagingMenu.css("width", elItemCount * pagingMenuItem.outerWidth(sTrue));
 
             pagingMenuItem.click(function() {
                 i = $(this).index();
